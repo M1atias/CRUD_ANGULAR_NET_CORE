@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+//import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tarjeta-credito',
@@ -15,7 +17,9 @@ export class TarjetaCreditoComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor( private fb: FormBuilder) {
+  constructor( private fb: FormBuilder, 
+    //private toastr: ToastrService
+    ) {
     this.form = this.fb.group({
       titular: ['', Validators.required],
       numeroTarjeta: ['',[Validators.required, Validators.maxLength(16), Validators.minLength(16)]],
@@ -36,8 +40,15 @@ export class TarjetaCreditoComponent implements OnInit {
       cvv: this.form.get('cvv')?.value,
     }
     this.listTarjetas.push(tarjeta)
+    //this.toastr.success('Hello world!', 'Toastr fun!');
+    Notify.success('Tarjeta registrada !!!',{timeout:1000});
     console.log(tarjeta)
     this.form.reset()
+  }
+
+  eliminarTarjeta(index:number){
+    this.listTarjetas.splice(index,1);
+    Notify.failure('Tarjeta eliminada !!!',{timeout:1000});
   }
 
 }
