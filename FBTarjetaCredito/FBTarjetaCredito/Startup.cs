@@ -36,6 +36,11 @@ namespace FBTarjetaCredito
 
             services.AddDbContext<AplicationDBContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
+            services.AddCors(options => options.AddPolicy("AllowWebApp",
+                builder => builder.AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +52,8 @@ namespace FBTarjetaCredito
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FBTarjetaCredito v1"));
             }
+
+            app.UseCors("AllowWebApp");
 
             app.UseHttpsRedirection();
 
